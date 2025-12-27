@@ -1,124 +1,247 @@
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+/* =========================
+   Global Reset & Variables
+========================= */
+:root {
+  --bg-dark: #020617;
+  --card-bg: rgba(2, 6, 23, 0.85);
+  --primary: linear-gradient(135deg, #3b82f6, #2563eb);
+  --success: linear-gradient(135deg, #22c55e, #16a34a);
+  --danger: linear-gradient(135deg, #ef4444, #dc2626);
+  --warning: linear-gradient(135deg, #facc15, #eab308);
+  --text-light: #e5e7eb;
+  --text-muted: #9ca3af;
+  --radius: 14px;
+  --shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
 }
 
+* {
+  box-sizing: border-box;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+/* =========================
+   Page Background
+========================= */
 body {
-  background: linear-gradient(135deg, #1e293b, #020617);
   min-height: 100vh;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
-  color: #e5e7eb;
+  background: linear-gradient(135deg, #020617, #1e293b);
+  color: var(--text-light);
 }
 
+/* =========================
+   Main Card
+========================= */
 .todo-container {
-  background: rgba(2, 6, 23, 0.85);
-  backdrop-filter: blur(12px);
   width: 100%;
-  max-width: 520px;
-  padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  max-width: 540px;
+  padding: 28px;
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 22px;
 }
 
+/* =========================
+   Input Section
+========================= */
 .input-group {
   display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
 input,
-select,
-button {
-  padding: 10px;
-  border-radius: 6px;
+select {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
   border: none;
+  background: #020617;
+  color: var(--text-light);
   outline: none;
+  font-size: 14px;
 }
 
-input {
-  flex: 1;
+input::placeholder {
+  color: var(--text-muted);
 }
 
 select {
-  background: #111827;
-  color: white;
-}
-
-button {
-  background: #2563eb;
-  color: white;
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
+/* =========================
+   Buttons (Global)
+========================= */
+button {
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
+button:active {
+  transform: scale(0.96);
+}
+
+/* Button Variants */
+button.primary {
+  background: var(--primary);
+}
+
+button.success {
+  background: var(--success);
+}
+
+button.danger {
+  background: var(--danger);
+}
+
+button.warning {
+  background: var(--warning);
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+/* =========================
+   Filter Buttons
+========================= */
 .filters {
   display: flex;
+  gap: 8px;
   justify-content: space-between;
-  margin: 15px 0;
+  margin: 16px 0;
 }
 
 .filters button {
-  background: #1e40af;
+  flex: 1;
+  padding: 10px;
+  font-size: 13px;
+  background: #020617;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.filters .danger {
-  background: #dc2626;
+.filters button:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
+/* =========================
+   Stats
+========================= */
 .stats {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
-  margin-bottom: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
 }
 
+/* =========================
+   Task List
+========================= */
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 li {
-  background: #020617;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: #020617;
   border-left: 4px solid;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+li span {
+  font-size: 14px;
+}
+
+/* Priority Colors */
 li.low {
   border-color: #22c55e;
 }
+
 li.medium {
   border-color: #facc15;
 }
+
 li.high {
   border-color: #ef4444;
 }
 
+/* Completed Task */
 li.completed span {
   text-decoration: line-through;
   opacity: 0.6;
 }
 
-.actions button {
-  margin-left: 5px;
-  background: #16a34a;
+/* =========================
+   Task Actions
+========================= */
+.actions {
+  display: flex;
+  gap: 6px;
 }
 
-.actions .delete {
-  background: #dc2626;
+.actions button {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.actions button:first-child {
+  background: var(--success);
+}
+
+.actions button:last-child {
+  background: var(--danger);
+}
+
+/* =========================
+   Responsive
+========================= */
+@media (max-width: 520px) {
+  .input-group {
+    flex-direction: column;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
 }
