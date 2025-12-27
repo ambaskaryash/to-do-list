@@ -1,76 +1,94 @@
 const taskInput = document.getElementById("taskInput");
+const priorityInput = document.getElementById("priority");
+const categoryInput = document.getElementById("category");
 const taskList = document.getElementById("taskList");
-const addBtn = document.getElementById("addBtn");
+
+const totalEl = document.getElementById("total");
+const completedEl = document.getElementById("completed");
+const pendingEl = document.getElementById("pending");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let currentFilter = "all";
 
-// Save tasks to localStorage
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-// Render tasks on UI
+function updateStats() {
+  totalEl.textContent = `Total: ${tasks.length}`;
+  completedEl.textContent = `Completed: ${tasks.filter(t => t.completed).length}`;
+  pendingEl.textContent = `Pending: ${tasks.filter(t => !t.completed).length}`;
+}
+
 function renderTasks() {
   taskList.innerHTML = "";
 
-  tasks.forEach((task, index) => {
-    const li = document.createElement("li");
-    li.className = task.completed ? "completed" : "";
+  tasks
+    .filter(task => {
+      if (currentFilter === "completed") return task.completed;
+      if (currentFilter === "pending") return !task.completed;
+      return true;
+    })
+    .forEach((task, index) => {
+      const li = document.createElement("li");
+      li.className = `${task.priority} ${task.completed ? "completed" : ""}`;
 
-    const span = document.createElement("span");
-    span.textContent = task.text;
+      li.innerHTML = `
+        <span>${task.text} <small>(${task.category})</small></span>
+        <div class="actions">
+          <button onclick="toggleTask(${index})">✓</button>
+          <button class="delete" onclick="deleteTask(${index})">✕</button>
+        </div>
+      `;
 
-    const actions = document.createElement("div");
-    actions.className = "actions";
+      taskList.appendChild(li);
+    });
 
-    const completeBtn = document.createElement("button");
-    completeBtn.textContent = "✓";
-    completeBtn.className = "complete";
-    completeBtn.addEventListener("click", () => toggleTask(index));
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "✕";
-    deleteBtn.addEventListener("click", () => deleteTask(index));
-
-    actions.appendChild(completeBtn);
-    actions.appendChild(deleteBtn);
-
-    li.appendChild(span);
-    li.appendChild(actions);
-    taskList.appendChild(li);
-  });
+  updateStats();
 }
 
-// Add new task
 function addTask() {
   const text = taskInput.value.trim();
   if (!text) return;
 
-  tasks.push({ text, completed: false });
+  tasks.push({
+    text,
+    priority: priorityInput.value,
+    category: categoryInput.value,
+    completed: false,
+  });
+
   taskInput.value = "";
   saveTasks();
   renderTasks();
 }
 
-// Toggle task completion
 function toggleTask(index) {
   tasks[index].completed = !tasks[index].completed;
   saveTasks();
   renderTasks();
 }
 
-// Delete task
 function deleteTask(index) {
   tasks.splice(index, 1);
   saveTasks();
   renderTasks();
 }
 
-// Event listeners
-addBtn.addEventListener("click", addTask);
-taskInput.addEventListener("keypress", (e) => {
+function filterTasks(type) {
+  currentFilter = type;
+  renderTasks();
+}
+
+function clearCompleted() {
+  tasks = tasks.filter(task => !task.completed);
+  saveTasks();
+  renderTasks();
+}
+
+document.getElementById("addBtn").addEventListener("click", addTask);
+taskInput.addEventListener("keypress", e => {
   if (e.key === "Enter") addTask();
 });
 
-// Initial render
 renderTasks();
