@@ -5,97 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To-Do List App</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    body {
-      background: #0f172a;
-      color: #e5e7eb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .todo-container {
-      background: #020617;
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .input-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-    }
-
-    button {
-      padding: 10px 15px;
-      background: #2563eb;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    li {
-      background: #111827;
-      padding: 10px;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    li.completed span {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-
-    .actions button {
-      margin-left: 5px;
-      background: #dc2626;
-    }
-
-    .actions button.complete {
-      background: #16a34a;
-    }
-
-    .actions button:hover {
-      opacity: 0.85;
-    }
-  </style>
+  <!-- CSS File -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -104,76 +15,13 @@
 
     <div class="input-group">
       <input type="text" id="taskInput" placeholder="Enter a new task" />
-      <button onclick="addTask()">Add</button>
+      <button id="addBtn">Add</button>
     </div>
 
     <ul id="taskList"></ul>
   </div>
 
-  <script>
-    const taskInput = document.getElementById("taskInput");
-    const taskList = document.getElementById("taskList");
-
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-    function saveTasks() {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-
-    function renderTasks() {
-      taskList.innerHTML = "";
-
-      tasks.forEach((task, index) => {
-        const li = document.createElement("li");
-        li.className = task.completed ? "completed" : "";
-
-        const span = document.createElement("span");
-        span.textContent = task.text;
-
-        const actions = document.createElement("div");
-        actions.className = "actions";
-
-        const completeBtn = document.createElement("button");
-        completeBtn.textContent = "✓";
-        completeBtn.className = "complete";
-        completeBtn.onclick = () => toggleTask(index);
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "✕";
-        deleteBtn.onclick = () => deleteTask(index);
-
-        actions.appendChild(completeBtn);
-        actions.appendChild(deleteBtn);
-
-        li.appendChild(span);
-        li.appendChild(actions);
-        taskList.appendChild(li);
-      });
-    }
-
-    function addTask() {
-      const text = taskInput.value.trim();
-      if (!text) return;
-
-      tasks.push({ text, completed: false });
-      taskInput.value = "";
-      saveTasks();
-      renderTasks();
-    }
-
-    function toggleTask(index) {
-      tasks[index].completed = !tasks[index].completed;
-      saveTasks();
-      renderTasks();
-    }
-
-    function deleteTask(index) {
-      tasks.splice(index, 1);
-      saveTasks();
-      renderTasks();
-    }
-
-    renderTasks();
-  </script>
+  <!-- JavaScript File -->
+  <script src="script.js"></script>
 </body>
 </html>
